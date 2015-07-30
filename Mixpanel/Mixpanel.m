@@ -8,6 +8,8 @@
 #include <sys/socket.h>
 #include <sys/sysctl.h>
 
+#import "MPSynchronousURLRequest.h"
+
 #import <CommonCrypto/CommonDigest.h>
 #import <CoreTelephony/CTCarrier.h>
 #import <CoreTelephony/CTTelephonyNetworkInfo.h>
@@ -629,7 +631,7 @@ static __unused NSString *MPURLEncode(NSString *s)
         [self updateNetworkActivityIndicator:YES];
 
         NSURLResponse *urlResponse = nil;
-        NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&urlResponse error:&error];
+        NSData *responseData = [MPSynchronousURLRequest sendSynchronousRequest:request returningResponse:&urlResponse error:&error];
 
         [self updateNetworkActivityIndicator:NO];
 
@@ -1204,7 +1206,7 @@ static void MixpanelReachabilityCallback(SCNetworkReachabilityRef target, SCNetw
             [request setValue:@"gzip" forHTTPHeaderField:@"Accept-Encoding"];
             NSError *error = nil;
             NSURLResponse *urlResponse = nil;
-            NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&urlResponse error:&error];
+            NSData *data = [MPSynchronousURLRequest sendSynchronousRequest:request returningResponse:&urlResponse error:&error];
             if (error) {
                 MixpanelError(@"%@ decide check http error: %@", self, error);
                 return;
